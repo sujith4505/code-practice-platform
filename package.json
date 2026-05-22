@@ -1,0 +1,9 @@
+{
+  "name": "code-practice-platform-root",
+  "version": "1.0.0",
+  "description": "Foolproof Root Configuration for Render/Vercel Full-Stack Deployments",
+  "scripts": {
+    "build": "npm install --prefix server && npm run build --prefix server",
+    "start": "npm start --prefix server"
+  }
+}
