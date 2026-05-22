@@ -1,0 +1,106 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Verdict {
+  ACCEPTED
+  WRONG_ANSWER
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+  TIME_LIMIT_EXCEEDED
+}
+
+enum BadgeType {
+  FIRST_SOLVE
+  STREAK_7
+  PROBLEMS_50
+  TOP_10
+  PERFECT_WEEK
+}
+
+model User {
+  id           String       @id @default(uuid())
+  email        String       @unique
+  username     String       @unique
+  passwordHash String
+  role         Role         @default(STUDENT)
+  streak       Int          @default(0)
+  lastActive   DateTime?
+  score        Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  
+  submissions  Submission[]
+  badges       Badge[]
+  sessions     Session[]
+}
+
+model Problem {
+  id                 String       @id @default(uuid())
+  title              String       @unique
+  difficulty         Difficulty   @default(EASY)
+  topic              String
+  description        String
+  examples           Json         // Array of { input, output, explanation }
+  constraints        String
+  testCases          Json         // Array of { input, expectedOutput, isSample }
+  codeTemplates      Json         // Map of lang -> starter template
+  referenceSolutions Json         // Map of lang -> correct code
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  
+  submissions        Submission[]
+}
+
+model Submission {
+  id         String     @id @default(uuid())
+  userId     String
+  problemId  String
+  code       String
+  language   String
+  status     Verdict
+  runtime    Float      // in ms
+  memory     Float      // in KB
+  output     String?
+  createdAt  DateTime   @default(now())
+  
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem    Problem    @relation(fields: [problemId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+  id        String    @id @default(uuid())
+  userId    String
+  type      BadgeType
+  awardedAt DateTime  @default(now())
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, type])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

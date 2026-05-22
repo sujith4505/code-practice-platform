@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-darkbg: #09090f;
+  --color-darkcard: #141422;
+  --color-primary: #7c5cff;
+  --color-primary-dark: #6246df;
+  --color-primary-light: #9b82ff;
+  --color-success: #00d48a;
+  --color-danger: #ff4d67;
+  --color-text: #f5f5f7;
+  --color-muted: #888888;
+  --color-border: #252538;
+
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* Global base styles */
+body {
+  background-color: #09090f;
+  color: #f5f5f7;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code, pre {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #09090f;
+}
+::-webkit-scrollbar-thumb {
+  background: #252538;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3e3e5c;
+}
+
+/* Utility classes */
+.glass {
+  background: rgba(20, 20, 34, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #a18bff 0%, #7c5cff 50%, #00d48a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
